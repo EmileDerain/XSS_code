@@ -1,20 +1,6 @@
-from flask import Flask
-from flask_restful import Resource, Api
-from flask_cors import CORS
+from django.http import HttpRequest, HttpResponse
 
-app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
-api = Api(app)
+def xss_fonction(request: HttpRequest) -> HttpResponse:
+    data = str(request.GET.get("data", ""))
 
-
-class view(Resource):
-    def get(self, data):
-        response = '<p>You searched for: ' + data + '</p>'
-        return response
-
-
-api.add_resource(view, '/<string:data>')
-
-
-if __name__ == '__main__':
-    app.run(debug=False)
+    return HttpResponse(f"<p>You searched for: {data}<p>")
