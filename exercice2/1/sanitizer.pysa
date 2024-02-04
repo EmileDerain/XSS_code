@@ -1,0 +1,2 @@
+@Sanitize
+def xssReflected.input_sanitizer(input):
