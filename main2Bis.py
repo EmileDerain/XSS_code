@@ -5,15 +5,17 @@ def xxe_fonction(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         xml_data = request.body.decode('utf-8')
 
-        # Process the XML data without proper validation
-        try:
-            root = etree.fromstring(xml_data)
-            cmd = root.findtext('command/shell')
-            rtn = eval(cmd)
-
-            response_data = f"Command {cmd} processed successfully : {rtn}"
-        except etree.XMLSyntaxError:
-            response_data = "Invalid XML format"
+        # Désactiver la résolution des entités
+        parser = etree.XMLParser(
+            dtd_validation=False,
+            load_dtd=False,
+            no_network=False,
+            resolve_entities=True,
+        )
+        root = etree.fromstring(xml_data, parser=parser)
+        exe = etree.tostring(root, pretty_print=True)
+        # Faire quelque chose avec les données XML
+        response_data = f"XML traité avec succès. Username: {exe}"
 
         return HttpResponse(response_data)
     else:

@@ -18,8 +18,7 @@ def vulnerable_xml_handler():
         )
         root = etree.fromstring(xml_data, parser=parser)
         exe = etree.tostring(root, pretty_print=True)
-        username = root.findtext('<username>')
-         # Faire quelque chose avec les données XML
+        # Faire quelque chose avec les données XML
         response_data = f"XML traité avec succès. Username: {exe}"
 
 
